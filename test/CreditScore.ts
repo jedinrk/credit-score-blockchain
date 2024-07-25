@@ -3,7 +3,7 @@ import {
   loadFixture,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
-import hre from "hardhat";
+import hre, { ethers } from "hardhat";
 
 describe("CreditScore", function () {
   // We define a fixture to reuse the same setup in every test.
@@ -26,22 +26,22 @@ describe("CreditScore", function () {
 
       await creditScore.updateCreditInfo(
         addr1.address,
-        1000,
         500,
-        10,
+        ethers.parseUnits("20", 'ether'),
+        20,
         5,
         2
       );
   
       const creditInfo = await creditScore.creditInfo(addr1.address);
-      expect(creditInfo.transactionVolume).to.equal(1000);
-      expect(creditInfo.walletBalance).to.equal(500);
+      expect(creditInfo.transactionVolume).to.equal(40);
+      expect(creditInfo.walletBalance).to.equal(191);
       expect(creditInfo.transactionFrequency).to.equal(10);
-      expect(creditInfo.transactionMix).to.equal(5);
-      expect(creditInfo.newTransactions).to.equal(2);
+      expect(creditInfo.transactionMix).to.equal(444);
+      expect(creditInfo.newTransactions).to.equal(111);
   
       const creditScoreValue = await creditScore.getCreditScore(addr1.address);
-      expect(creditScoreValue).to.equal(502); // Based on the provided weights
+      expect(creditScoreValue).to.equal(370); // Based on the provided weights
   
       const lastUpdated = await creditScore.getLastUpdated(addr1.address);
       expect(lastUpdated).to.be.above(0); // Timestamp should be set
