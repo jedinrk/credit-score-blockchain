@@ -1,7 +1,8 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 const CreditScoreModule = buildModule("CreditScoreModule", (m) => {
-  const creditScore = m.contract("CreditScore", [], {});
+  const owner = m.getAccount(0);
+  const creditScore = m.contract("CreditScore", [owner]);
 
   return { creditScore };
 });

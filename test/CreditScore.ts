@@ -15,7 +15,7 @@ describe("CreditScore", function () {
     const [owner, addr1] = await hre.ethers.getSigners();
 
     const CreditScore = await hre.ethers.getContractFactory("CreditScore");
-    const creditScore = await CreditScore.deploy();
+    const creditScore = await CreditScore.deploy(owner);
 
     return { creditScore, owner, addr1 };
   }
