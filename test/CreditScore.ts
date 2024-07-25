@@ -24,7 +24,7 @@ describe("CreditScore", function () {
     it("should update and retrieve credit information", async function () {
       const {creditScore, addr1} = await loadFixture(deployCreditScoreFixture);
 
-      await creditScore.updateCreditInfo(
+      await creditScore.updateCreditScore(
         addr1.address,
         500,
         ethers.parseUnits("20", 'ether'),

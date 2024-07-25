@@ -27,6 +27,7 @@ contract CreditScore {
     AttributeConfig public newTransactionsConfig = AttributeConfig(1, 10);
 
     event CheckCreditScore(address indexed user);
+    event UpdatedCreditScore(address indexed user, uint256 creditScore);
 
     function calculateAttributeScore(uint256 value, AttributeConfig memory config) internal pure returns (uint256) {
         if (value <= config.minValue) {
@@ -39,7 +40,20 @@ contract CreditScore {
         }
     }
 
-    function updateCreditInfo(
+    function checkCreditScore(address user) external returns (uint256) {
+        CreditInfo storage info = creditInfo[user];
+
+        // Check if lastUpdated is within 1000 blocks
+        uint256 blockDifference = (block.timestamp - info.lastUpdated) / 15; // assuming average 15 seconds per block
+        if (blockDifference <= 1000) {
+            return info.creditScore;
+        } else {
+            emit CheckCreditScore(user);
+            return 0; // Indicate that an update is required
+        }
+    }
+
+    function updateCreditScore(
         address user,
         uint256 transactionVolume,
         uint256 walletBalance,
@@ -75,7 +89,7 @@ contract CreditScore {
         
         info.creditScore = ((weightedSum * (maxScore - minScore)) / 1000) + minScore;
 
-        emit CheckCreditScore(user);
+        emit UpdatedCreditScore(user, info.creditScore);
     }
 
     function getCreditScore(address user) external view returns (uint256) {
