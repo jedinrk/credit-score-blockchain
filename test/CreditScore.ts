@@ -20,6 +20,15 @@ describe("CreditScore", function () {
     return { creditScore, owner, addr1 };
   }
 
+  async function updateCreditScoreElements(creditScore: any, addr1: any) {
+
+    await creditScore.updateTransactionVolume(addr1.address, 5000);
+    await creditScore.updateWalletBalance(addr1.address, ethers.parseEther("50"));
+    await creditScore.updateTransactionFrequency(addr1.address, 500);
+    await creditScore.updateTransactionMix(addr1.address, 5);
+    await creditScore.updateNewTransactions(addr1.address, 5);
+  }
+
   describe("Deployment", function () {
 
     it("Should deploy the contract and set the correct owner", async function () {
@@ -28,32 +37,6 @@ describe("CreditScore", function () {
       expect(await creditScore.owner()).to.equal(owner.address);
     });
     
-    /*it("should update and retrieve credit information", async function () {
-      const {creditScore, addr1} = await loadFixture(deployCreditScoreFixture);
-
-      await creditScore.updateCreditScore(
-        addr1.address,
-        500,
-        ethers.parseUnits("20", 'ether'),
-        20,
-        5,
-        2
-      );
-  
-      const creditInfo = await creditScore.creditInfo(addr1.address);
-      expect(creditInfo.transactionVolume).to.equal(40);
-      expect(creditInfo.walletBalance).to.equal(191);
-      expect(creditInfo.transactionFrequency).to.equal(10);
-      expect(creditInfo.transactionMix).to.equal(444);
-      expect(creditInfo.newTransactions).to.equal(111);
-  
-      const creditScoreValue = await creditScore.getCreditScore(addr1.address);
-      expect(creditScoreValue).to.equal(370); // Based on the provided weights
-  
-      const lastUpdated = await creditScore.getLastUpdated(addr1.address);
-      expect(lastUpdated).to.be.above(0); // Timestamp should be set
-    });*/
-
   });
 
   describe("Credit score element configurations", function () {
@@ -76,6 +59,41 @@ describe("CreditScore", function () {
     });
   
     
+  });
+
+  describe("Credit Score Calculations", function () {
+    
+    it("Should correctly update the credit score", async function () {
+      const {creditScore, addr1} = await loadFixture(deployCreditScoreFixture);
+
+      await updateCreditScoreElements(creditScore, addr1);
+
+      const info = await creditScore.creditInfo(addr1.address);
+      
+      expect(info.creditScore).to.be.within(300, 850);
+      expect(info.lastUpdated).to.be.gt(0);
+    });
+    
+    it("Should correctly update the credit score", async function () {
+      const {creditScore, addr1} = await loadFixture(deployCreditScoreFixture);
+
+      await updateCreditScoreElements(creditScore, addr1);
+
+      const info = await creditScore.creditInfo(addr1.address);
+      
+      expect(info.creditScore).to.be.within(300, 850);
+      expect(info.lastUpdated).to.be.gt(0);
+    });
+  
+    it("Should emit UpdatedCreditScore event", async function () {
+      const {creditScore, addr1} = await loadFixture(deployCreditScoreFixture);
+
+      await updateCreditScoreElements(creditScore, addr1);
+
+      await expect(creditScore.updateCreditScore(addr1.address))
+        .to.emit(creditScore, "UpdatedCreditScore")
+        .withArgs(addr1.address, await creditScore.getCreditScore(addr1.address));
+    });
   });
 
 
