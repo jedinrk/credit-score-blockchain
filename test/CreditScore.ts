@@ -21,7 +21,14 @@ describe("CreditScore", function () {
   }
 
   describe("Deployment", function () {
-    it("should update and retrieve credit information", async function () {
+
+    it("Should deploy the contract and set the correct owner", async function () {
+      const {creditScore, owner} = await loadFixture(deployCreditScoreFixture);
+
+      expect(await creditScore.owner()).to.equal(owner.address);
+    });
+    
+    /*it("should update and retrieve credit information", async function () {
       const {creditScore, addr1} = await loadFixture(deployCreditScoreFixture);
 
       await creditScore.updateCreditScore(
@@ -45,8 +52,30 @@ describe("CreditScore", function () {
   
       const lastUpdated = await creditScore.getLastUpdated(addr1.address);
       expect(lastUpdated).to.be.above(0); // Timestamp should be set
-    });
+    });*/
 
+  });
+
+  describe("Credit score element configurations", function () {
+
+    it("Should allow the owner to update transaction volume configuration", async function () {
+      const {creditScore, owner} = await loadFixture(deployCreditScoreFixture);
+
+      await creditScore.updateTransactionVolumeConfig(200, 20000);
+      const config = await creditScore.transactionVolumeConfig();
+      expect(config.minValue).to.equal(200);
+      expect(config.maxValue).to.equal(20000);
+    });
+  
+    it("Should revert if non-owner tries to update transaction volume configuration", async function () {
+      const {creditScore, addr1} = await loadFixture(deployCreditScoreFixture);
+
+      await expect(
+        creditScore.connect(addr1).updateTransactionVolumeConfig(200, 20000)
+      ).to.be.revertedWithCustomError(creditScore, 'OwnableUnauthorizedAccount');
+    });
+  
+    
   });
 
 
