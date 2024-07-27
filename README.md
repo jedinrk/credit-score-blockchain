@@ -7,3 +7,41 @@ The smart contract, written in Solidity and developed with Hardhat framework, tr
 ## Backend System
 The backend system, built with Node.js and Express, provides API endpoints to interact with the smart contract. It uses Passport.js for JWT-based authentication to ensure secure access to the APIs.
 
+## How to Install, Configure, and Run the Hardhat Project
+
+### Installation
+
+1. Clone the repository:
+   ```
+    git clone https://github.com/yourusername/CreditScoreProject.git
+    cd CreditScoreProject
+   ```
+
+2. Install dependencies:
+  ```
+  npm install
+  ```
+
+Configuration
+Create a .env file in the root directory with the following content:
+
+  ```
+  SEPOLIA_URL=https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID
+  PRIVATE_KEY=YOUR_PRIVATE_KEY
+  ```
+
+Running the Project
+1. Compile the smart contract:
+  ```
+  npx hardhat compile
+  ```
+2. Deploy the smart contract to the Sepolia test network:
+  ```
+  npx hardhat ignition deploy ./ignition/modules/CreditScore.ts --network sepolia
+  ```
+3. Run the tests:
+  ```
+  npx hardhat test
+  ```
+
+
