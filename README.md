@@ -45,7 +45,7 @@ Running the Project
   ```
 
 
-## How to Install, Configure, and Run the Hardhat Project
+## How to Install, Configure, and Run the Backend Project
 
 
 1. Change directory after cloning:
@@ -71,3 +71,48 @@ Start the backend server:
   ```
   node src/index.js
   ```
+
+
+### API Endpoints
+
+#### Authentication
+
+- **Login**: `POST /login`
+  - Body:
+    ```json
+    {
+      "username": "admin",
+      "password": "supersecret"
+    }
+    ```
+
+#### Credit Score Management
+
+- **Get Credit Score**: `GET /api/credit-score/:user`
+
+- **Update Transaction Volume**: `POST /api/update-transaction-volume`
+  - Body:
+    ```json
+    {
+      "user": "user_address",
+      "transactionVolume": 500
+    }
+    ```
+
+- **Update Wallet Balance**: `POST /api/update-wallet-balance`
+  - Body:
+    ```json
+    {
+      "user": "user_address",
+      "walletBalance": 50
+    }
+    ```
+
+- **Check Credit Score**: `POST /api/check-credit-score/:user`
+
+
+#### Security
+The backend uses `Passport.js` with JWT for secure authentication. Ensure the JWT_SECRET in your `.env` file is kept secret and secure.
+
+#### Performance and Reliability
+The backend is built with performance and reliability in mind. Ensure your Node.js environment is optimized and consider using a process manager like `PM2` for managing your application in a production environment.
