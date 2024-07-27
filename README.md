@@ -12,10 +12,10 @@ The backend system, built with Node.js and Express, provides API endpoints to in
 ### Installation
 
 1. Clone the repository:
-   ```
-    git clone https://github.com/yourusername/CreditScoreProject.git
-    cd CreditScoreProject
-   ```
+  ```
+  git clone https://github.com/yourusername/CreditScoreProject.git
+  cd CreditScoreProject
+  ```
 
 2. Install dependencies:
   ```
