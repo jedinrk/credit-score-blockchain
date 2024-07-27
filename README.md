@@ -45,3 +45,29 @@ Running the Project
   ```
 
 
+## How to Install, Configure, and Run the Hardhat Project
+
+
+1. Change directory after cloning:
+  ```
+  cd backend
+  ```
+
+2. Install dependencies:
+  ```
+  npm install
+  ```
+
+Configuration
+Create a .env file in the root directory with the following content:
+
+  ```
+  JWT_SECRET=your_jwt_secret_key
+  INFURA_PROJECT_ID=your_infura_project_id
+  SMART_CONTRACT_ADDRESS=deployed_smart_contract_address
+  PRIVATE_KEY=your_private_key
+  ```
+Start the backend server:
+  ```
+  node src/index.js
+  ```
