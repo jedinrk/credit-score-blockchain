@@ -1,9 +1,8 @@
-const { ethers } = require('ethers');
+const { Web3, HttpProvider } = require('web3');
 const config = require('../config/config');
 
-const provider = new ethers.providers.JsonRpcProvider(config.infuraUrl);
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-const contract = new ethers.Contract(config.contractAddress, config.contractABI, wallet);
+const web3 = new Web3(new HttpProvider(config.infuraUrl));
+const contract = new web3.eth.Contract(config.contractABI.abi, config.contractAddress);
 
 //Event listener service for smart contract
 /*exports.listenToEvents = () => {
